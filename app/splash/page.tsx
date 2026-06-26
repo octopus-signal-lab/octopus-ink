@@ -126,11 +126,6 @@ function AppLauncher() {
           </button>
         </div>
         <div className="app-launcher__grid">
-          <a className="app-launcher__tile is-active" href={OPEN_URL} role="menuitem" onClick={() => setOpen(false)}>
-            <span className="app-launcher__badge app-launcher__badge--here">Here</span>
-            <span className="app-launcher__icon"><img src="/octopus-doc.png" alt="" /></span>
-            <span className="app-launcher__name">Octopus Ink</span>
-          </a>
           <a className="app-launcher__tile" href="https://octosignal.org/" role="menuitem" onClick={() => setOpen(false)}>
             <span className="app-launcher__icon"><img src="/splash/icon-octopus-signal-lab.png" alt="" loading="lazy" /></span>
             <span className="app-launcher__name">Octopus Signal Lab</span>
@@ -138,6 +133,11 @@ function AppLauncher() {
           <a className="app-launcher__tile" href="https://museweaver.io/parlor" role="menuitem" onClick={() => setOpen(false)}>
             <span className="app-launcher__icon"><img src="/splash/icon-museweaver-parlor.png" alt="" loading="lazy" /></span>
             <span className="app-launcher__name">Museweaver Parlor</span>
+          </a>
+          <a className="app-launcher__tile is-active" href={OPEN_URL} role="menuitem" onClick={() => setOpen(false)}>
+            <span className="app-launcher__badge app-launcher__badge--here">Here</span>
+            <span className="app-launcher__icon"><img src="/octopus-doc.png" alt="" /></span>
+            <span className="app-launcher__name">Octopus Ink</span>
           </a>
           <div className="app-launcher__tile is-disabled" aria-disabled="true">
             <span className="app-launcher__badge"><LockIcon />Soon</span>

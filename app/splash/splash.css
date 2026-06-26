@@ -996,6 +996,47 @@
   .oi-splash .browser { transform: none; }
   .oi-splash .nav { grid-template-columns: auto 1fr; }
   .oi-splash .hero { padding-top: 30px; }
+  .oi-splash .app-launcher { right: 16px; }
+  .oi-splash .app-launcher__panel {
+    left: 14px;
+    right: 14px;
+    top: 112px;
+    width: auto;
+    max-width: none;
+    box-sizing: border-box;
+    padding: 24px 20px 18px;
+    border-radius: 22px;
+  }
+  .oi-splash .app-launcher__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 8px;
+    row-gap: 14px;
+  }
+  .oi-splash .app-launcher__tile {
+    min-width: 0;
+    min-height: 132px;
+    gap: 9px;
+    border-radius: 16px;
+    padding: 16px 6px 14px;
+  }
+  .oi-splash .app-launcher__icon,
+  .oi-splash .app-launcher__icon img {
+    width: 62px;
+    height: 62px;
+  }
+  .oi-splash .app-launcher__name {
+    width: 100%;
+    max-width: 76px;
+    font-size: 0.82rem;
+    line-height: 1.12;
+    overflow-wrap: anywhere;
+  }
+  .oi-splash .app-launcher__badge {
+    top: 9px;
+    right: 7px;
+    padding: 3px 6px;
+    font-size: 0.5rem;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .oi-splash .browser { transform: none; }
