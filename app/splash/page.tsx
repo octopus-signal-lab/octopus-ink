@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import "./splash.css";
 
-/* Where the CTAs point. Splash-only build: "Open in browser" goes to the editor
-   at "/", which is a real working link. Desktop downloads are placeholders until
+/* Where the CTAs point. The splash is the front door at "/", while the editor
+   lives at "/app". Desktop downloads are placeholders until
    the Tauri wrapper ships (next roadmap phase). */
-const OPEN_URL = "/";
+const OPEN_URL = "/app";
 
 /* ---------------- icons (shared) ---------------- */
 function EyeIcon() {

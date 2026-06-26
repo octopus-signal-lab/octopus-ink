@@ -14,8 +14,9 @@ secrets**.
 - Already in the repo: DOMPurify XSS sanitization, CSP + security headers
   (`next.config.ts`), PWA/offline service worker, `.github/workflows/ci.yml`,
   `.github/dependabot.yml`.
-- **Splash / landing page** at route **`/splash`** (`app/splash/`), ecosystem-aligned
-  (OctoSignal black/gold). The editor still owns `/`; the splash is a separate route.
+- **Splash / landing page** is the public front door at **`/`** and remains available at
+  **`/splash`** (`app/splash/`), ecosystem-aligned (OctoSignal black/gold). The editor lives
+  at **`/app`**.
 - **Tauri v2 wrapper scaffolded** in `src-tauri/`, with `@tauri-apps/plugin-dialog` +
   `@tauri-apps/plugin-fs` wired through `lib/tauriFileSystem.ts`. `npm run build:tauri:web`
   static-exports successfully to `out/`. Packaged `.dmg` / `.exe` artifacts are still blocked
@@ -31,7 +32,7 @@ secrets**.
 | Vercel team | `team_D6j7O0ZFiQBYefK7JRELkabK` (same team as `octosignal` / `museweaver`) |
 | Vercel project | `octopus-ink` (**new** — do NOT link to `octosignal` or `museweaver`) |
 | Framework | Next.js (App Router), root `./`, Node 22.x+ |
-| Domain | `ink.octosignal.org` (subdomain — **no change to the `octosignal` project**) |
+| Domain | `ink.octosignal.org` (subdomain attached to the `octopus-ink` project — **no change to the `octosignal` project**) |
 
 ## Safety rules
 - **Do not** modify the `octosignal` or `museweaver` projects, their `.vercel/` links,
@@ -60,9 +61,10 @@ gh repo create octopus-signal-lab/octopus-ink --private --source . --remote orig
 
 ### 2. Create + link the Vercel project (preview first)
 Current status: project `octopus-ink` exists and local `.vercel/project.json` points to
-`prj_DDCYx8pgAJK8E3KLeMto4Wt43m2S` / `team_D6j7O0ZFiQBYefK7JRELkabK`. The first CLI deploy was
-created from `main` and Vercel labeled it `target: production`, but deployment protection is
-enabled and no `ink.octosignal.org` domain has been attached.
+`prj_DDCYx8pgAJK8E3KLeMto4Wt43m2S` / `team_D6j7O0ZFiQBYefK7JRELkabK`. Domain
+`ink.octosignal.org` is attached to this project. The first CLI deploy was created from `main`
+and Vercel labeled it `target: production`; deployment protection may still need review before
+public launch.
 
 ```bash
 vercel whoami && vercel teams ls          # confirm team_D6j7O0ZFiQBYefK7JRELkabK
@@ -73,8 +75,9 @@ Or import the GitHub repo in the Vercel dashboard (team `team_D6j7…`, framewor
 Next.js, root `./`). Git integration gives auto previews on push.
 
 ### 3. Verify the preview (smoke test)
-- App loads at `/`, no console errors; **`/splash`** renders (hero, 9-dot launcher,
+- Splash loads at `/`, no console errors; **`/splash`** also renders (hero, 9-dot launcher,
   animated app-preview, features, FAQ, footer).
+- Editor loads at `/app`.
 - `GET /manifest.webmanifest` → 200, `application/manifest+json`.
 - Response headers include `Content-Security-Policy` (no `'unsafe-eval'` in the prod build)
   + `X-Content-Type-Options: nosniff`.
@@ -94,10 +97,8 @@ Next.js, root `./`). Git integration gives auto previews on push.
 All in `app/splash/page.tsx`:
 - **Done:** the FAQ GitHub link points to
   **`github.com/octopus-signal-lab/octopus-ink`**.
-- **"Open in browser"** CTA → `OPEN_URL = "/"` (the editor). Fine for a standalone deploy.
-  Open question for Evelyne: should the **splash be the front door at `/`** (editor moved to
-  `/app`) instead? If yes, move the editor route and update `OPEN_URL`, the PWA `start_url`
-  in `app/manifest.ts`, and the service worker. Currently deferred — confirm before launch.
+- **Done:** "Open in browser" CTA → `/app` (the editor). The splash is the front door at `/`;
+  PWA `start_url` is `/app`.
 - **Desktop download buttons** (macOS `.dmg`, Windows `.exe`) are inert placeholders
   (`href="#"`, `preventDefault`). Wire them to real artifacts in **Phase C**.
 

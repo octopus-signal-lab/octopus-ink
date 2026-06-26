@@ -8,7 +8,7 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: "Octopus Ink",
     description:
       "A local Markdown viewer and editor with two lenses — rendered Visual and Raw source. 100% client-side; nothing is ever uploaded.",
-    start_url: "/",
+    start_url: "/app",
     scope: "/",
     display: "standalone",
     background_color: "#0e0b07",

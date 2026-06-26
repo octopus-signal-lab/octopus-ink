@@ -2,7 +2,7 @@
    Stale-while-revalidate for same-origin GETs: serve from cache instantly,
    refresh in the background, and fall back to cache when offline. The app is
    100% client-side, so once visited it keeps working with no network. */
-const CACHE = "octopus-ink-v1";
+const CACHE = "octopus-ink-v2";
 
 self.addEventListener("install", () => {
   self.skipWaiting();

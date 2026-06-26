@@ -84,9 +84,10 @@ because macOS WKWebView does not provide Chromium's File System Access API.
 ```
 app/
   layout.tsx        fonts (Manrope, Playfair, Newsreader, JetBrains Mono), metadata, favicon
-  page.tsx          client root — keyboard, drag/drop, mobile gate, wiring
+  page.tsx          splash front door
+  app/page.tsx      editor — keyboard, drag/drop, mobile gate, wiring
   globals.css       the OctoSignal Lab "Parlor" brass design system
-  splash/           the /splash landing page (page.tsx + scoped splash.css), ecosystem-aligned
+  splash/           shared splash route (page.tsx + scoped splash.css), ecosystem-aligned
 components/         Sidebar, Topbar, ActionsMenu, FormattingToolbar, Stage,
                     Welcome, DropOverlay, Toast, MobileGate, icons
 lib/
