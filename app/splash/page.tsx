@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import "./splash.css";
 
 /* Where the CTAs point. The splash is the front door at "/", while the editor
-   lives at "/app". Desktop downloads are placeholders until
-   the Tauri wrapper ships (next roadmap phase). */
+   lives at "/app". The macOS desktop download is hosted as a static file. */
 const OPEN_URL = "/app";
+const MAC_DOWNLOAD_URL = "/downloads/octopus-ink-0.1.0-mac-arm64.dmg";
 
 /* ---------------- icons (shared) ---------------- */
 function EyeIcon() {
@@ -49,6 +49,7 @@ function LockIcon() {
 
 /* Shared CTA pair (hero + closing). */
 function CtaRow() {
+  const [downloadOpen, setDownloadOpen] = useState(false);
   const preventDefault = (e: React.MouseEvent) => e.preventDefault();
   return (
     <div className="cta-row">
@@ -56,20 +57,19 @@ function CtaRow() {
         <EyeIcon />
         Open in browser
       </a>
-      <div className="dl-menu">
-        <button className="btn ghost" type="button">
+      <div className={`dl-menu${downloadOpen ? " is-open" : ""}`}>
+        <button className="btn ghost" type="button" aria-haspopup="menu" aria-expanded={downloadOpen} onClick={() => setDownloadOpen((v) => !v)}>
           <DownloadIcon />
           Download for desktop
         </button>
         <div className="dl-pop">
-          {/* Placeholders — wire to real .dmg / .exe artifacts when the desktop build ships. */}
-          <a href="#" onClick={preventDefault}>
+          <a href={MAC_DOWNLOAD_URL} download>
             <AppleIcon />
-            macOS<span className="meta">.dmg · Apple Silicon + Intel</span>
+            macOS<span className="meta">.dmg · Apple Silicon</span>
           </a>
-          <a href="#" onClick={preventDefault}>
+          <a className="is-disabled" href="#" aria-disabled="true" onClick={preventDefault}>
             <WindowsIcon />
-            Windows<span className="meta">.exe · 64-bit</span>
+            Windows<span className="meta">.exe · soon</span>
           </a>
         </div>
       </div>

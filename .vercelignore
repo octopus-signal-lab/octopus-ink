@@ -1,0 +1,7 @@
+.git
+.next
+out
+node_modules
+dist-desktop
+src-tauri/target
+src-tauri/gen

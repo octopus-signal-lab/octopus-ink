@@ -364,7 +364,8 @@
   z-index: 30;
 }
 .oi-splash .dl-menu:hover .dl-pop,
-.oi-splash .dl-menu:focus-within .dl-pop {
+.oi-splash .dl-menu:focus-within .dl-pop,
+.oi-splash .dl-menu.is-open .dl-pop {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(0);
@@ -381,6 +382,14 @@
   transition: background 0.12s, color 0.12s;
 }
 .oi-splash .dl-pop a:hover { background: rgba(227, 196, 134, 0.1); color: var(--text); }
+.oi-splash .dl-pop a.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+.oi-splash .dl-pop a.is-disabled:hover {
+  background: transparent;
+  color: var(--mute);
+}
 /* flex:none keeps the icon a fixed 18px even when a row's meta text is long
    (the macOS row is wider), so the macOS/Windows labels stay left-aligned. */
 .oi-splash .dl-pop a svg { width: 18px; height: 18px; flex: none; color: var(--gold-dim); }

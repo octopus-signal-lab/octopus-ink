@@ -7,6 +7,9 @@
 
 # production
 /build
+/dist-desktop
+/src-tauri/target
+/src-tauri/gen
 
 # misc
 .DS_Store
