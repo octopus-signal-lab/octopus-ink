@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope, Playfair_Display } from "next/font/google";
+import { Manrope, Playfair_Display, Newsreader, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
@@ -15,6 +15,23 @@ const playfair = Playfair_Display({
   style: ["normal", "italic"],
   weight: ["500", "600"],
   variable: "--font-playfair",
+  display: "swap",
+});
+
+/* Splash-page type system (ecosystem-aligned): serif accent + mono labels.
+   Self-hosted via next/font so the strict CSP (font-src 'self') is satisfied. */
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  weight: ["400", "500", "600"],
+  variable: "--font-newsreader",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-jetbrains",
   display: "swap",
 });
 
@@ -39,7 +56,10 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${manrope.variable} ${playfair.variable}`}>
+    <html
+      lang="en"
+      className={`${manrope.variable} ${playfair.variable} ${newsreader.variable} ${jetbrainsMono.variable}`}
+    >
       <body>
         {children}
         <ServiceWorkerRegister />
