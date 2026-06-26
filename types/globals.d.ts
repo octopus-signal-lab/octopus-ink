@@ -40,6 +40,7 @@ declare global {
   }
 
   interface Window {
+    isTauri?: boolean;
     showDirectoryPicker?(options?: {
       id?: string;
       mode?: FileSystemPermissionMode;

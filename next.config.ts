@@ -2,6 +2,7 @@ import path from "node:path";
 import type { NextConfig } from "next";
 
 const dev = process.env.NODE_ENV !== "production";
+const tauriBuild = process.env.TAURI_BUILD === "1";
 
 /* Defense-in-depth headers. The Markdown XSS vector is already neutralised by
    DOMPurify; this CSP is a second layer. Dev needs 'unsafe-eval' + ws for HMR.
@@ -33,11 +34,20 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  ...(tauriBuild
+    ? {
+        output: "export" as const,
+      }
+    : {}),
   // Keep file tracing scoped to this app only (it lives in a shared ecosystem root).
   outputFileTracingRoot: path.join(__dirname),
-  async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
-  },
+  ...(tauriBuild
+    ? {}
+    : {
+        async headers() {
+          return [{ source: "/:path*", headers: securityHeaders }];
+        },
+      }),
 };
 
 export default nextConfig;

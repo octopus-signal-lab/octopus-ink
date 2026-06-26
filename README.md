@@ -47,8 +47,11 @@ app can never drift onto another project's port.
 npm install
 npm run dev        # http://localhost:3008
 npm run build      # production build
+npm run build:tauri:web # static export for the desktop wrapper
 npm run typecheck  # tsc --noEmit
 npm run lint       # eslint
+npm run tauri:dev  # desktop dev shell (requires Rust/Cargo)
+npm run tauri:build # package .dmg/.exe targets (requires Rust/Cargo + signing setup)
 ```
 
 ## Browser support
@@ -59,6 +62,10 @@ folder browsing, and save-to-disk depend on the File System Access API
 `<input type="file">` picker / drag-and-drop ingestion (no write-back; Save
 downloads instead). Narrow viewports (≤720px) show a mobile gate with a
 single-file read path.
+
+The desktop wrapper uses **Tauri v2**. In Tauri, native open/save/rename/folder
+refresh route through `@tauri-apps/plugin-dialog` and `@tauri-apps/plugin-fs`,
+because macOS WKWebView does not provide Chromium's File System Access API.
 
 ## Keyboard
 
@@ -85,8 +92,10 @@ components/         Sidebar, Topbar, ActionsMenu, FormattingToolbar, Stage,
 lib/
   store.ts          zustand store (files, lens, dirty, persistence prefs)
   fileSystem.ts     ingestion (FSA / picker / drag-drop), save, export, IndexedDB
+  tauriFileSystem.ts native file adapter used only inside the Tauri wrapper
   markdown.ts       marked + turndown helpers, word-count
   types.ts
+src-tauri/          Tauri v2 app shell, permissions, bundle config
 types/              ambient FSA + webkitdirectory declarations
 design-assts/       original design handoff (reference only)
 ```

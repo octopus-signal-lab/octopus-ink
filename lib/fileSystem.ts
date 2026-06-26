@@ -1,5 +1,12 @@
 import { htmlToMarkdown, parseMarkdown } from "./markdown";
 import { activeFile, mkId, useStore } from "./store";
+import {
+  openFilesTauri,
+  openFolderTauri,
+  refreshNativeSource,
+  renameNativeFile,
+  saveActiveTauri,
+} from "./tauriFileSystem";
 import type { MdFile } from "./types";
 
 export const MD_RE = /\.(md|markdown|mdx|txt)$/i;
@@ -65,6 +72,7 @@ export async function loadFromDirHandle(
 
 /** Returns true if handled; false → caller should fall back to <input>. */
 export async function openFolderFSA(): Promise<boolean> {
+  if (await openFolderTauri()) return true;
   if (!window.showDirectoryPicker) return false;
   try {
     const handle = await window.showDirectoryPicker({ id: "mdv", mode: "read" });
@@ -81,6 +89,8 @@ export async function openFolderFSA(): Promise<boolean> {
 /** Re-scan a folder section for files added/changed/removed; keep unsaved edits. */
 export async function refreshSource(src: string): Promise<void> {
   const h = store().sourceHandles[src];
+  const nativeRoot = store().nativeSourceRoots[src];
+  if (!h && nativeRoot && (await refreshNativeSource(src, nativeRoot))) return;
   if (!h) {
     store().showToast("This source can’t be refreshed");
     return;
@@ -146,6 +156,7 @@ export async function refreshSource(src: string): Promise<void> {
  *  Individual files (FSA preferred → live save handle)
  * ------------------------------------------------------------------ */
 export async function openFilesFSA(): Promise<boolean> {
+  if (await openFilesTauri()) return true;
   if (!window.showOpenFilePicker) return false;
   try {
     const handles = await window.showOpenFilePicker({
@@ -372,6 +383,17 @@ export async function renameActive(rawName: string): Promise<void> {
     }
     return;
   }
+  if (f.nativePath) {
+    const nextPath = await renameNativeFile(f.nativePath, name);
+    if (nextPath) {
+      store().assignNativePathToActive(nextPath, name, name);
+      store().showToast("Renamed to " + name);
+    } else {
+      store().renameActiveFile(name, true);
+      store().showToast(`Renamed - use Save to write "${name}" to disk`);
+    }
+    return;
+  }
   store().renameActiveFile(name, false);
   store().showToast("Renamed to " + name);
 }
@@ -394,6 +416,7 @@ export function downloadMd(file: MdFile): void {
 }
 
 export async function saveActive(): Promise<void> {
+  if (await saveActiveTauri()) return;
   const f = activeFile(store());
   if (!f) {
     store().showToast("No document open");

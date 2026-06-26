@@ -47,6 +47,8 @@ interface EditorState {
   restoreHandle: FileSystemDirectoryHandle | null;
   /** Section name → directory handle (enables per-folder refresh). */
   sourceHandles: Record<string, FileSystemDirectoryHandle>;
+  /** Section name → native directory path in the Tauri desktop wrapper. */
+  nativeSourceRoots: Record<string, string>;
   /** Section names that are real folders (vs. loose files / drafts / imports). */
   folderSources: string[];
   /** Collapsed section names. */
@@ -77,6 +79,7 @@ interface EditorState {
       replace?: boolean;
       isFolder?: boolean;
       handle?: FileSystemDirectoryHandle;
+      nativeRoot?: string;
     }
   ) => void;
   replaceSourceFiles: (src: string, list: MdFile[]) => void;
@@ -94,6 +97,7 @@ interface EditorState {
     name: string,
     path: string
   ) => void;
+  assignNativePathToActive: (nativePath: string, name: string, path: string) => void;
   renameActiveFile: (name: string, dropHandle: boolean) => void;
 
   setDirHandle: (h: FileSystemDirectoryHandle | null) => void;
@@ -122,6 +126,7 @@ export const useStore = create<EditorState>((set, get) => ({
   dirHandle: null,
   restoreHandle: null,
   sourceHandles: {},
+  nativeSourceRoots: {},
   folderSources: [],
   collapsedGroups: [],
   toast: null,
@@ -159,7 +164,7 @@ export const useStore = create<EditorState>((set, get) => ({
   },
 
   addSource: (list, sourceKey, opts = {}) => {
-    const { open = true, replace = true, isFolder = false, handle } = opts;
+    const { open = true, replace = true, isFolder = false, handle, nativeRoot } = opts;
     list.forEach((f) => (f.group = sourceKey));
     set((s) => {
       const files = replace
@@ -181,7 +186,10 @@ export const useStore = create<EditorState>((set, get) => ({
       const sourceHandles = handle
         ? { ...s.sourceHandles, [sourceKey]: handle }
         : s.sourceHandles;
-      return { files, folderSources, sourceHandles };
+      const nativeSourceRoots = nativeRoot
+        ? { ...s.nativeSourceRoots, [sourceKey]: nativeRoot }
+        : s.nativeSourceRoots;
+      return { files, folderSources, sourceHandles, nativeSourceRoots };
     });
     if (open && list.length) {
       const last =
@@ -242,11 +250,14 @@ export const useStore = create<EditorState>((set, get) => ({
       const files = get().files.filter((f) => f.group !== src);
       // drop the section's directory handle too (was leaking)
       const { [src]: _omit, ...sourceHandles } = get().sourceHandles;
+      const { [src]: _nativeOmit, ...nativeSourceRoots } = get().nativeSourceRoots;
       void _omit;
+      void _nativeOmit;
       set({
         files,
         folderSources: get().folderSources.filter((s) => s !== src),
         sourceHandles,
+        nativeSourceRoots,
       });
       if (hadActive) {
         if (files.length) get().openDoc(files[0].id);
@@ -319,6 +330,13 @@ export const useStore = create<EditorState>((set, get) => ({
       ),
     })),
 
+  assignNativePathToActive: (nativePath, name, path) =>
+    set((s) => ({
+      files: s.files.map((f) =>
+        f.id === s.activeId ? { ...f, nativePath, name, path, dirty: false } : f
+      ),
+    })),
+
   renameActiveFile: (name, dropHandle) => {
     const cur = get().files.find((f) => f.id === get().activeId);
     const path = cur ? (cur.group ? cur.group + "/" + name : name) : name;
@@ -329,7 +347,9 @@ export const useStore = create<EditorState>((set, get) => ({
               ...f,
               name,
               path,
-              ...(dropHandle ? { handle: undefined, dirty: true } : {}),
+              ...(dropHandle
+                ? { handle: undefined, nativePath: undefined, dirty: true }
+                : {}),
             }
           : f
       ),

@@ -10,4 +10,6 @@ export interface MdFile {
   dirty: boolean;
   /** Present only when opened via the File System Access API (enables save-to-disk). */
   handle?: FileSystemFileHandle;
+  /** Present only in the Tauri desktop wrapper (enables native save-to-disk). */
+  nativePath?: string;
 }
