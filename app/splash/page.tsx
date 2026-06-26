@@ -461,7 +461,7 @@ export default function SplashPage() {
             </details>
             <details className="faq">
               <summary>Is it really open source?</summary>
-              <p>Yes. The source is on <a href="https://github.com/octosignal/octopus-ink" target="_blank" rel="noopener">GitHub</a>. You&apos;re welcome to read it, build it yourself, or contribute. A little credit or a link back to <a href="https://octosignal.org/" target="_blank" rel="noopener">OctoSignal Lab</a> is always appreciated.</p>
+              <p>Yes. The source is on <a href="https://github.com/octopus-signal-lab/octopus-ink" target="_blank" rel="noopener">GitHub</a>. You&apos;re welcome to read it, build it yourself, or contribute. A little credit or a link back to <a href="https://octosignal.org/" target="_blank" rel="noopener">OctoSignal Lab</a> is always appreciated.</p>
             </details>
           </div>
         </section>
