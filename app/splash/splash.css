@@ -407,7 +407,17 @@
   color: var(--faint);
   font-weight: 600;
 }
-.oi-splash .trust span { display: inline-flex; align-items: center; gap: 6px; }
+.oi-splash .trust span,
+.oi-splash .trust a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.oi-splash .trust a {
+  color: var(--gold-soft);
+  text-decoration: none;
+}
+.oi-splash .trust a:hover { color: var(--gold); }
 .oi-splash .trust span::before {
   content: "";
   width: 5px;

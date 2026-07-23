@@ -27,6 +27,9 @@ location and loads the whole folder, keeping the file selected.
 via the [File System Access API](https://developer.mozilla.org/docs/Web/API/File_System_API).
 There is no backend and nothing is ever uploaded.
 
+Source: <https://github.com/octopus-signal-lab/octopus-ink>. Released under
+the MIT License.
+
 ## Stack
 
 Ecosystem-standard: **Next.js 15** (App Router, client-only SPA) · **React 19** ·

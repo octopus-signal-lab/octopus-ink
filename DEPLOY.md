@@ -27,7 +27,7 @@ secrets**.
 ## Targets (create NEW resources only)
 | Thing | Value |
 |---|---|
-| GitHub repo | `octopus-signal-lab/octopus-ink` (**private**) |
+| GitHub repo | `octopus-signal-lab/octopus-ink` (**public**) |
 | GitHub identity | SSH alias `github-octopus` (`~/.ssh/id_ed25519_octopus`), author `Evelyne Kanakis <evelyne@octosignal.org>` |
 | Vercel team | `team_D6j7O0ZFiQBYefK7JRELkabK` (same team as `octosignal` / `museweaver`) |
 | Vercel project | `octopus-ink` (**new** — do NOT link to `octosignal` or `museweaver`) |
@@ -99,15 +99,15 @@ All in `app/splash/page.tsx`:
   **`github.com/octopus-signal-lab/octopus-ink`**.
 - **Done:** "Open in browser" CTA → `/app` (the editor). The splash is the front door at `/`;
   PWA `start_url` is `/app`.
-- **Desktop download buttons** (macOS `.dmg`, Windows `.exe`) are inert placeholders
-  (`href="#"`, `preventDefault`). Wire them to real artifacts in **Phase C**.
+- **Done:** the desktop download CTA points directly to the signed/notarized Mac `.dmg`.
+  Windows is intentionally not advertised until there is a signed installer.
 
 ---
 
 ## Phase C — Desktop wrapper (Tauri) — now Codex-owned
 
-Goal: ship Mac (`.dmg`) + Windows (`.exe`) builds of the same app, wired into the splash's
-"Download for desktop" buttons. **Recommend Tauri v2** (small bundles, native menus).
+Goal: ship Mac (`.dmg`) now and keep Windows (`.exe`) buildable but unpublished until signing
+is worth the maintenance lane. **Recommend Tauri v2** (small bundles, native menus).
 
 **Key constraint — file I/O.** The web app's open/save relies on the **File System Access
 API** (`showOpenFilePicker` / `showDirectoryPicker`, see `lib/fileSystem.ts`). That API exists

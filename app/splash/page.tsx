@@ -7,6 +7,7 @@ import "./splash.css";
    lives at "/app". */
 const OPEN_URL = "/app";
 const MAC_DOWNLOAD_URL = "/downloads/octopus-ink-0.1.0-mac-arm64.dmg";
+const GITHUB_URL = "https://github.com/octopus-signal-lab/octopus-ink";
 
 /* ---------------- icons (shared) ---------------- */
 function EyeIcon() {
@@ -24,20 +25,6 @@ function DownloadIcon() {
     </svg>
   );
 }
-function AppleIcon() {
-  return (
-    <svg className="dl-apple" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M15.8 12.4c0-2.2 1.8-3.2 1.9-3.3-1-1.5-2.6-1.7-3.2-1.7-1.4-.1-2.6.8-3.3.8-.7 0-1.7-.8-2.8-.8-1.5 0-2.8.8-3.5 2.1-1.5 2.6-.4 6.5 1.1 8.6.7 1 1.5 2.2 2.6 2.2 1 0 1.4-.7 2.7-.7 1.2 0 1.6.7 2.7.7 1.1 0 1.8-1 2.5-2 .8-1.2 1.1-2.3 1.1-2.4-.1 0-2.1-.8-2.1-3.1zM13.7 6.1c.6-.7 1-1.7.9-2.7-.8 0-1.9.6-2.5 1.3-.5.6-1 1.6-.9 2.6.9.1 1.9-.5 2.5-1.2z" />
-    </svg>
-  );
-}
-function WindowsIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor">
-      <path d="M3 5.6 10.4 4.6v6.9H3zM3 12.5h7.4v6.9L3 18.4zM11.4 4.4 21 3v8.5h-9.6zM11.4 12.5H21V21l-9.6-1.4z" />
-    </svg>
-  );
-}
 function LockIcon() {
   return (
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.7">
@@ -49,30 +36,16 @@ function LockIcon() {
 
 /* Shared CTA pair (hero + closing). */
 function CtaRow() {
-  const [downloadOpen, setDownloadOpen] = useState(false);
-  const preventDefault = (e: React.MouseEvent) => e.preventDefault();
   return (
     <div className="cta-row">
       <a className="btn primary" href={OPEN_URL}>
         <EyeIcon />
         Open in browser
       </a>
-      <div className={`dl-menu${downloadOpen ? " is-open" : ""}`}>
-        <button className="btn ghost" type="button" aria-haspopup="menu" aria-expanded={downloadOpen} onClick={() => setDownloadOpen((v) => !v)}>
-          <DownloadIcon />
-          Download for desktop
-        </button>
-        <div className="dl-pop">
-          <a href={MAC_DOWNLOAD_URL} download>
-            <AppleIcon />
-            macOS<span className="meta">.dmg · Apple Silicon</span>
-          </a>
-          <a className="is-disabled" href="#" aria-disabled="true" onClick={preventDefault}>
-            <WindowsIcon />
-            Windows<span className="meta">.exe · soon</span>
-          </a>
-        </div>
-      </div>
+      <a className="btn ghost" href={MAC_DOWNLOAD_URL} download>
+        <DownloadIcon />
+        Download for Mac
+      </a>
     </div>
   );
 }
@@ -398,9 +371,9 @@ export default function SplashPage() {
           </p>
           <CtaRow />
           <div className="trust">
-            <span>Free &amp; open source</span>
+            <a href={GITHUB_URL} target="_blank" rel="noopener">Open source on GitHub</a>
             <span>100% local, no account</span>
-            <span>Chrome, Edge &amp; Mac</span>
+            <span>Chrome, Edge &amp; Mac app</span>
           </div>
         </header>
 
@@ -461,7 +434,7 @@ export default function SplashPage() {
             </details>
             <details className="faq">
               <summary>Is it really open source?</summary>
-              <p>Yes. The source is on <a href="https://github.com/octopus-signal-lab/octopus-ink" target="_blank" rel="noopener">GitHub</a>. You&apos;re welcome to read it, build it yourself, or contribute. A little credit or a link back to <a href="https://octosignal.org/" target="_blank" rel="noopener">OctoSignal Lab</a> is always appreciated.</p>
+              <p>Yes. The source is on <a href={GITHUB_URL} target="_blank" rel="noopener">GitHub</a>. You&apos;re welcome to read it, build it yourself, or contribute. A little credit or a link back to <a href="https://octosignal.org/" target="_blank" rel="noopener">OctoSignal Lab</a> is always appreciated.</p>
             </details>
           </div>
         </section>
