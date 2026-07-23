@@ -3,9 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import "./splash.css";
 
-/* Where the CTA points. The splash is the front door at "/", while the editor
+/* Where the CTAs point. The splash is the front door at "/", while the editor
    lives at "/app". */
 const OPEN_URL = "/app";
+const MAC_DOWNLOAD_URL = "/downloads/octopus-ink-0.1.0-mac-arm64.dmg";
 
 /* ---------------- icons (shared) ---------------- */
 function EyeIcon() {
@@ -13,6 +14,27 @@ function EyeIcon() {
     <svg viewBox="0 0 24 24" fill="none">
       <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" stroke="currentColor" strokeWidth="1.8" />
       <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.8" />
+    </svg>
+  );
+}
+function DownloadIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M12 4v10m0 0 4-4m-4 4-4-4M5 19h14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+function AppleIcon() {
+  return (
+    <svg className="dl-apple" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M15.8 12.4c0-2.2 1.8-3.2 1.9-3.3-1-1.5-2.6-1.7-3.2-1.7-1.4-.1-2.6.8-3.3.8-.7 0-1.7-.8-2.8-.8-1.5 0-2.8.8-3.5 2.1-1.5 2.6-.4 6.5 1.1 8.6.7 1 1.5 2.2 2.6 2.2 1 0 1.4-.7 2.7-.7 1.2 0 1.6.7 2.7.7 1.1 0 1.8-1 2.5-2 .8-1.2 1.1-2.3 1.1-2.4-.1 0-2.1-.8-2.1-3.1zM13.7 6.1c.6-.7 1-1.7.9-2.7-.8 0-1.9.6-2.5 1.3-.5.6-1 1.6-.9 2.6.9.1 1.9-.5 2.5-1.2z" />
+    </svg>
+  );
+}
+function WindowsIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M3 5.6 10.4 4.6v6.9H3zM3 12.5h7.4v6.9L3 18.4zM11.4 4.4 21 3v8.5h-9.6zM11.4 12.5H21V21l-9.6-1.4z" />
     </svg>
   );
 }
@@ -25,14 +47,32 @@ function LockIcon() {
   );
 }
 
-/* Shared CTA (hero + closing). */
+/* Shared CTA pair (hero + closing). */
 function CtaRow() {
+  const [downloadOpen, setDownloadOpen] = useState(false);
+  const preventDefault = (e: React.MouseEvent) => e.preventDefault();
   return (
     <div className="cta-row">
       <a className="btn primary" href={OPEN_URL}>
         <EyeIcon />
         Open in browser
       </a>
+      <div className={`dl-menu${downloadOpen ? " is-open" : ""}`}>
+        <button className="btn ghost" type="button" aria-haspopup="menu" aria-expanded={downloadOpen} onClick={() => setDownloadOpen((v) => !v)}>
+          <DownloadIcon />
+          Download for desktop
+        </button>
+        <div className="dl-pop">
+          <a href={MAC_DOWNLOAD_URL} download>
+            <AppleIcon />
+            macOS<span className="meta">.dmg · Apple Silicon</span>
+          </a>
+          <a className="is-disabled" href="#" aria-disabled="true" onClick={preventDefault}>
+            <WindowsIcon />
+            Windows<span className="meta">.exe · soon</span>
+          </a>
+        </div>
+      </div>
     </div>
   );
 }
@@ -360,7 +400,7 @@ export default function SplashPage() {
           <div className="trust">
             <span>Free &amp; open source</span>
             <span>100% local, no account</span>
-            <span>Chrome &amp; Edge</span>
+            <span>Chrome, Edge &amp; Mac</span>
           </div>
         </header>
 
@@ -409,11 +449,11 @@ export default function SplashPage() {
             </details>
             <details className="faq">
               <summary>Where are my files stored?</summary>
-              <p>On your own device, full stop. The app reads and saves your local files directly in your browser, and nothing is uploaded to a server or tracked.</p>
+              <p>On your own device, full stop. The app reads and saves your local files directly through your browser or Mac desktop app, and nothing is uploaded to a server or tracked.</p>
             </details>
             <details className="faq">
               <summary>What&apos;s the difference between the browser and desktop versions?</summary>
-              <p>The desktop build is paused until Apple Developer ID signing and notarization are ready. For now, use the browser version in Chrome or Edge; it can open files and folders and save them back to disk.</p>
+              <p>They&apos;re the same app. The browser version runs in Chrome or Edge and can open files and folders and save them back to disk. The Mac desktop app wraps the same experience in a signed, notarized native window for Apple Silicon Macs.</p>
             </details>
             <details className="faq">
               <summary>What can I open and import?</summary>
