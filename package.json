@@ -6,8 +6,10 @@
   "scripts": {
     "predev": "node scripts/ensure-port.mjs",
     "dev": "next dev -p 3008",
+    "prebuild": "node scripts/clean-next-output.mjs",
     "build": "next build",
-    "build:tauri:web": "cross-env TAURI_BUILD=1 next build",
+    "prebuild:tauri:web": "node scripts/clean-next-output.mjs",
+    "build:tauri:web": "cross-env TAURI_BUILD=1 next build && node scripts/assert-tauri-entry.mjs",
     "start": "next start -p 3008",
     "lint": "eslint",
     "typecheck": "tsc --noEmit --incremental false",
